@@ -21,8 +21,8 @@ jobs:
     steps:
       - run: echo return 1 
       - run:
-          name: Upload Failed Tests
-          command: curl --data fail_tests.log http://example.com/error_logs
+          name: on error
+          command: echo "hello error!"
           when: on_fail
   save_hello_world_output:
     docker:
@@ -68,9 +68,7 @@ workflows:
     jobs:
       - welcome/run
       - save_hello_world_output
-      - print_failed_output:
-          requires:
-            - hello_world
+      - print_failed_output
       - print_output_file:
           requires:
             - save_hello_world_output
