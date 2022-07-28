@@ -12,7 +12,7 @@ orbs:
 jobs:
   save_hello_world_output:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/base:2020.01
     steps:
       - run: mkdir -p workspace
       - run: echo "Hello, world!" > workspace/output.txt
@@ -22,7 +22,7 @@ jobs:
             - output.txt
   print_output_file:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/base:2020.01
     steps:
       - attach_workspace:
           at: /tmp/workspace
