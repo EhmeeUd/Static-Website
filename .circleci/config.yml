@@ -15,6 +15,15 @@ orbs:
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
+  print_failed_output:
+    docker:
+      - image: cimg/base:2020.01
+    steps:
+      - run: echo return 1 
+      - run:
+          name: Upload Failed Tests
+          command: curl --data fail_tests.log http://example.com/error_logs
+          when: on_fail
   save_hello_world_output:
     docker:
       - image: cimg/base:2020.01
@@ -44,7 +53,7 @@ jobs:
       - print_pipeline_id
   build:
     docker:
-      - image: cimg/base:2020.01
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
@@ -59,6 +68,9 @@ workflows:
     jobs:
       - welcome/run
       - save_hello_world_output
+      - print_failed_output:
+          requires:
+            - hello_world
       - print_output_file:
           requires:
             - save_hello_world_output
